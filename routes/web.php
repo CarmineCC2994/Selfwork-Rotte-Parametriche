@@ -2,65 +2,62 @@
 
 use Illuminate\Support\Facades\Route;
 
-$giochi = [
-    [
-        'id' => 1,
-        'titolo' => 'Grand Theft Auto VI',
-        'genere' => 'Action / Open World',
-        'piattaforma' => 'PS5, Xbox Series X/S',
-        'descrizione' => 'Il nuovo capitolo della celebre saga Rockstar Games.',
-        'immagine' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxXu9ewObZAmVqTRx-foUcqJxwKwjVsJvt3gwd8yhkrg&s'
-    ],
-    [
-        'id' => 2,
-        'titolo' => 'The Legend of Zelda: Ocarina of Time',
-        'genere' => 'Action Adventure',
-        'piattaforma' => 'Nintendo 64',
-        'descrizione' => 'Un capolavoro senza tempo che ha fatto la storia dei videogiochi.',
-        'immagine' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaGcb0-meTRMJyhOQnvc_-1Hi_zNBfySLcLu6t4oPz2A&s=10'
-    ],
-    [
-        'id' => 3,
-        'titolo' => 'Elden Ring',
-        'genere' => 'Action RPG',
-        'piattaforma' => 'PC, PS5, Xbox',
-        'descrizione' => 'Un\'avventura fantasy ricca di sfide e misteri.',
-        'immagine' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWk9NacV1sBqNJUk5WrWuFlI93T_lqbxajO3QTdiVMiQ&s=10'
-    ],
-    [
-        'id' => 4,
-        'titolo' => 'Minecraft',
-        'genere' => 'Sandbox',
-        'piattaforma' => 'PC, Console, Mobile',
-        'descrizione' => 'Costruisci, esplora e sopravvivi in un mondo infinito.',
-        'immagine' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIMdkewbfqqzz1mxM-m0Du3Yj7FusWZUN-oj0Wroiiwg&s=10'
-    ]
-];
-
-Route::get('/', function () use ($giochi) {
-    return view('home', compact('giochi'));
-})->name('home');
+Route::get('/', function () {
+    return view('welcome');
+})-> name('homepage');
 
 Route::get('/chi-siamo', function () {
-    return view('chi-siamo');
-})->name('chi-siamo');
+    $users = [ ['name'=>'Nino','surname'=>'Frassica','role'=>'Senior Manager'],
+    ['name'=>'Federico','surname'=>'Lucia','role'=>'HR'],
+    ['name'=>'Walter','surname'=>'Mazzarri','role'=>'Developer']];
+    return view('about-us', ['users' => $users]);
+})-> name('aboutUs');
 
-Route::get('/servizi', function () {
-    return view('servizi');
-})->name('servizi');
+Route::get('/chi-siamo/detail/{name}', function($name){
+     $users = [ ['name'=>'Nino','surname'=>'Frassica','role'=>'Senior Manager'],
+    ['name'=>'Federico','surname'=>'Lucia','role'=>'HR'],
+    ['name'=>'Walter','surname'=>'Mazzarri','role'=>'Developer']];
+  foreach($users as $user){
+if($name == $user["name"]){
+    return view('about-us-detail', ['user'=>$user]);
+}
 
-Route::get('/articoli', function () use ($giochi) {
-    return view('articoli', compact('giochi'));
-})->name('articoli');
+  }
 
-Route::get('/articoli/{id}', function ($id) use ($giochi) {
 
-    $gioco = collect($giochi)->firstWhere('id', $id);
+})-> name('aboutUsDetail');
 
-    if (!$gioco) {
-        abort(404);
+
+
+Route::get('/contatti', function () {
+    return view('contacts');
+})-> name('contacts');
+
+Route::get('/games', function(){
+    $games = [
+        ['id' => '1', 'title' => 'The Legend of Zelda Ocarina of Time', 'director' => 'Eiji Aonuma', 'img' => '/media/Zelda.jpg', 'genres' => 'action-adventure'],
+        ['id' => '2', 'title' => 'Grand Theft Auto VI', 'director' => 'Sam Houser', 'img' => '/media/GTA.jpg', 'genres' => 'action-adventure'],
+        ['id' => '3', 'title' => 'Resident Evil Requiem', 'director' => 'Koshi Nakanishi', 'img' => '/media/RER.jpg', 'genres' => 'survival horror'],
+        ['id' => '4', 'title' => 'Phantom Blade Zero', 'director' => 'Qiwei Soulframe Liang', 'img' => '/media/Phantom.jpg', 'genres' => ' GDR'],
+        ['id' => '5', 'title' => 'Control Resonant', 'director' => 'Mikael Kasurinen ', 'img' => '/media/control.jpg', 'genres' => "action RPG open world"],
+        ['id' => '6', 'title' => '007 First Light', 'director' => ' Hakan Abrak', 'img' => '/media/seven.jpg', 'genres' => "action-adventure"]
+    ];
+    return view('game.games', ['games'=>$games]);
+})-> name('game.list');
+
+Route::get('/game/detail/{id}', function($id){
+    $games = [
+        ['id' => '1', 'title' => 'The Legend of Zelda Ocarina of Time', 'director' => 'Eiji Aonuma', 'img' => '/media/Zelda.jpg', 'genres' => 'action-adventure'],
+        ['id' => '2', 'title' => 'Grand Theft Auto VI', 'director' => 'Sam Houser', 'img' => '/media/GTA.jpg', 'genres' => 'action-adventure'],
+        ['id' => '3', 'title' => 'Resident Evil Requiem', 'director' => 'Koshi Nakanishi', 'img' => '/media/RER.jpg', 'genres' => 'survival horror'],
+        ['id' => '4', 'title' => 'Phantom Blade Zero', 'director' => 'Qiwei Soulframe Liang', 'img' => '/media/Phantom.jpg', 'genres' => ' GDR'],
+        ['id' => '5', 'title' => 'Control Resonant', 'director' => 'Mikael Kasurinen ', 'img' => '/media/control.jpg', 'genres' => "action RPG open world"],
+        ['id' => '6', 'title' => '007 First Light', 'director' => ' Hakan Abrak', 'img' => '/media/seven.jpg', 'genres' => "action-adventure"]
+    ];
+     foreach($games as $game){
+if($id == $game['id']){
+    return view('game.detail', ['game'=>$game]);
     }
+     }
+})-> name('game.detail');
 
-    return view('dettaglio', compact('gioco'));
-
-})->name('articoli.dettaglio');
